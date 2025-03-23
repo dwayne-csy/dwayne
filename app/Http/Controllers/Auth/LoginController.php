@@ -15,8 +15,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    // Default redirect for users
-    protected $redirectTo = '/home'; // Default for regular users
+ // Default for regular users
 
     /**
      * Create a new controller instance.
@@ -38,17 +37,22 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        if ($user->admin) {
-            return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
+        // Debugging: Check if the method is being called
+        \Log::info('User logged in:', ['user_id' => $user->id, 'role' => $user->role]);
+    
+        // Check if the user is an admin
+        if ($user->role === 'admin') {
+            \Log::info('Redirecting admin to dashboard');
+            return redirect()->route('admin.dashboard');
         }
     
-        return redirect()->route('home'); // Redirect to home for regular users
+        // Default redirect for regular users
+        \Log::info('Redirecting regular user to home');
+        return redirect()->route('home');
     }
-    
-    
 
     /**
-     * Log the user out and redirect to login page.
+     * Log the user out and redirect to the login page.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse

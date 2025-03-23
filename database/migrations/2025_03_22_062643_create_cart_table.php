@@ -9,11 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('cart', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('product_id');
+            $table->integer('quantity')->default(1);
             $table->timestamps();
+
+            // Correct Foreign Keys
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('product_id')->references('product_id')->on('product')->onDelete('cascade');
         });
     }
 
