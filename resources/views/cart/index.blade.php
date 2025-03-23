@@ -52,6 +52,11 @@
         </table>
         <div class="d-flex justify-content-between">
             <h3>Total: ${{ number_format($cartItems->sum(fn($product) => $product->quantity * $product->product->sell_price), 2) }}</h3>
+            <!-- Add Checkout Button -->
+            <form action="{{ route('cart.checkout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-success btn-lg">Checkout</button>
+            </form>
         </div>
     @endif
 </div>

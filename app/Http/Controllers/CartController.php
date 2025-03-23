@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Order; 
+use App\Models\OrderLine;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -77,4 +79,39 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Cart updated successfully.');
     }
+
+    public function checkout(Request $request)
+    {
+        // Get the authenticated user's cart items
+        $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
+    
+        // Calculate the total price using sell_price
+        $total = $cartItems->sum(fn($item) => $item->quantity * $item->product->sell_price);
+    
+        // Create the order
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'total_amount' => $total,
+            'status' => Order::STATUS_PENDING, // Default status is pending
+        ]);
+    
+        // Create order lines
+        foreach ($cartItems as $item) {
+            OrderLine::create([
+                'order_id' => $order->id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'sell_price' => $item->product->sell_price, // Use sell_price
+            ]);
+        }
+    
+        // Clear the cart
+        Cart::where('user_id', auth()->id())->delete();
+    
+        // Redirect to a success page
+        return redirect()->route('cart.index')->with('success', 'Order placed successfully!');
+    }
+
+
+
 }
