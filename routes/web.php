@@ -57,6 +57,10 @@ Route::middleware('auth')->group(function () {
 // Regular user route
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+Route::middleware(['auth', 'user.status'])->group(function () {
+    // Protected routes
+});
+
 
 
 

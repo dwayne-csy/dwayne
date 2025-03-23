@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+    <!-- Back Button -->
+    <div class="mb-3">
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">

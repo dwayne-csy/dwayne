@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+    <!-- Back Button -->
+    <div class="mb-3">
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
     <h1>Suppliers</h1>
     <a href="{{ route('admin.supplier.create') }}" class="btn btn-success">Add Supplier</a>
     <table class="table table-bordered mt-3">

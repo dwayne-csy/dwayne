@@ -29,7 +29,7 @@ class CartController extends Controller
     
         // Check if the product is already in the cart
         $cartItem = Cart::where('user_id', $userId)
-                        ->where('product_id', $productId)  // Use $productId here instead of $Id
+                        ->where('product_id', $productId)  // Use product_id here
                         ->first();
     
         if ($cartItem) {
@@ -51,11 +51,10 @@ class CartController extends Controller
     // View the cart items
     public function index()
     {
-        $cartItems = Cart::where('user_id', auth()->id())->get();
+        $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
         return view('cart.index', compact('cartItems'));
     }
     
-
     // Remove a product from the cart
     public function removeFromCart($id)
     {
