@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
 
 
 //REGISTER
@@ -57,6 +58,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 Route::middleware('auth')->group(function () {
+    // PROFILE ROUTES
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // CART ROUTES
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');

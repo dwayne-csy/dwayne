@@ -4,15 +4,33 @@
 <div class="container">
     <h1 class="text-center mb-4">Welcome to StyleSphere</h1>
 
-    <!-- Cart Section -->
+    <!-- Navigation and Cart Section -->
     <div class="d-flex justify-content-between mb-4">
+        <!-- Hamburger Profile Menu (Left) -->
         <div>
-            <a href="{{ route('cart.index') }}" class="btn btn-info">
-                Cart ({{ auth()->user()->cart->count() }})  <!-- Display the number of products in the cart -->
-            </a>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-bars"></i> <!-- Hamburger icon -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fas fa-user-edit me-2"></i>Edit Profile</a></li>
+                    <!-- Add more menu items here if needed -->
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                </ul>
+            </div>
         </div>
+        
+        <!-- Shopping Cart (Right) -->
         <div>
-
+            <a href="{{ route('cart.index') }}" class="btn btn-outline-info position-relative">
+                <i class="fas fa-shopping-bag"></i>
+                @if(auth()->user()->cart->count() > 0)
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ auth()->user()->cart->count() }}
+                </span>
+                @endif
+            </a>
         </div>
     </div>
 
@@ -36,7 +54,6 @@
                                     <button type="submit" class="btn btn-primary">Add to Cart</button>
                                 </form>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -48,4 +65,12 @@
         @endif
     </div>
 </div>
+
+@section('scripts')
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<!-- Bootstrap JS for dropdown functionality -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+@endsection
 @endsection

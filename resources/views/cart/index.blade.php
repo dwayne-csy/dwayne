@@ -2,7 +2,14 @@
 
 @section('content')
 <div class="container">
-    <h1>Your Cart</h1>
+    <!-- Back Button and Title Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="{{ route('home') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <h1 class="mb-0">Your Cart</h1>
+        <div></div> <!-- Empty div for spacing balance -->
+    </div>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -20,7 +27,7 @@
                 <tr>
                     <th>Product</th>
                     <th>Quantity</th>
-                    <th>Price</th> <!-- Display sell_price here -->
+                    <th>Price</th>
                     <th>Total</th>
                     <th>Actions</th>
                 </tr>
@@ -37,8 +44,8 @@
                                 <button type="submit" class="btn btn-primary btn-sm">Update</button>
                             </form>
                         </td>
-                        <td>${{ number_format($product->product->sell_price, 2) }}</td> <!-- Display sell_price as Price -->
-                        <td>${{ number_format($product->quantity * $product->product->sell_price, 2) }}</td> <!-- Calculate total using sell_price -->
+                        <td>${{ number_format($product->product->sell_price, 2) }}</td>
+                        <td>${{ number_format($product->quantity * $product->product->sell_price, 2) }}</td>
                         <td>
                             <form action="{{ route('cart.remove', $product->id) }}" method="POST">
                                 @csrf
@@ -52,7 +59,6 @@
         </table>
         <div class="d-flex justify-content-between">
             <h3>Total: ${{ number_format($cartItems->sum(fn($product) => $product->quantity * $product->product->sell_price), 2) }}</h3>
-            <!-- Add Checkout Button -->
             <form action="{{ route('cart.checkout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-success btn-lg">Checkout</button>
@@ -60,4 +66,9 @@
         </div>
     @endif
 </div>
+
+@section('scripts')
+<!-- Font Awesome for the arrow icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+@endsection
 @endsection
